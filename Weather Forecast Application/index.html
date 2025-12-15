@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Dashboard</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="min-h-screen p-4 md:p-8 weatherBackground">
+    <div class="max-w-6xl mx-auto">
+        <header class="text-center mb-8">
+            <h1 class="text-4xl md:text-6xl font-bold text-green-600 mb-4">
+                <i class="fas fa-cloud-sun text-yellow-400 mr-2"></i>Weather Dashboard
+            </h1>
+            <p class="text-blue-600">Get real-time weather updates and forecasts</p>
+        </header>
+
+        <div class="flex flex-col lg:flex-row gap-6">
+            <!-- Left Panel -->
+            <div class="lg:w-1/3">
+                <!-- Search Section -->
+                <div class="bg-white rounded-2xl shadow-lg p-6 mb-6">
+                    <h2 class="text-xl font-semibold text-gray-800 mb-4">Search Location</h2>
+
+                    <div class="flex gap-2 mb-4">
+                        <div class="relative flex-grow">
+                            <input type="text" id="city" placeholder="E.g., New York, London, Tokyo"
+                                class="w-full p-3 pl-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
+                            <i class="fas fa-search absolute left-3 top-3.5 text-gray-400"></i>
+                        </div>
+                        <button id="searchBtn"
+                            class="bg-blue-500 hover:bg-blue-600 text-white px-5 rounded-lg transition duration-200">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row gap-3">
+                        <button id="locationBtn"
+                            class="flex items-center justify-center gap-2 bg-green-500 hover:bg-green-600 text-white p-3 rounded-lg transition duration-200 flex-grow">
+                            <i class="fas fa-location-arrow"></i>
+                            <span>Use My Location</span>
+                        </button>
+
+                        <button id="unit"
+                            class="flex items-center justify-center gap-2 bg-gray-200 hover:bg-gray-300 text-gray-800 p-3 rounded-lg transition duration-200">
+                            <i class="fas fa-thermometer-half"></i>
+                            <span>Switch to °F</span>
+                        </button>
+                    </div>
+
+                    <!-- Recent Searches -->
+                    <div class="mt-6">
+                        <div class="flex justify-between items-center mb-2">
+                            <h3 class="font-medium text-gray-700">Recent Searches</h3>
+                            <button id="clearHistory" class="text-sm text-red-500 hover:text-red-700">
+                                <i class="fas fa-trash-alt mr-1"></i>Clear
+                            </button>
+                        </div>
+                        <div id="recentSearche" class="bg-gray-50 rounded-lg p-2 min-h-10">
+                            <p class="text-gray-500 text-center py-2">No recent searches</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Current Weather -->
+                <div class="bg-white rounded-2xl shadow-lg p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <h2 id="currentCity" class="text-2xl font-bold text-gray-800">Kolkata</h2>
+                        <span id="currentDate" class="text-gray-600">2025-12-13</span>
+                    </div>
+
+                    <div class="flex items-center justify-center mb-6">
+                        <div id="weatherIcon" class="text-6xl text-blue-500 mr-4">
+                            <i class="fas fa-sun"></i>
+                        </div>
+                        <div>
+                            <div class="flex items-baseline">
+                                <span id="currentTemp" class="text-5xl font-bold text-gray-800">--</span>
+                                <span id="tempUnit" class="text-2xl text-gray-600 ml-1">°C</span>
+                            </div>
+                            <p id="weatherDesc" class="text-gray-600">--</p>
+                        </div>
+                    </div>
+
+                    <!-- Weather Details -->
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-blue-50 p-4 rounded-xl">
+                            <div class="flex items-center mb-1">
+                                <i class="fas fa-wind text-blue-500 mr-2"></i>
+                                <span class="font-medium text-gray-700">Wind</span>
+                            </div>
+                            <p id="windSpeed" class="text-2xl font-bold text-gray-800">-- <span
+                                    class="text-lg">M/S</span></p>
+                        </div>
+
+                        <div class="bg-green-50 p-4 rounded-xl">
+                            <div class="flex items-center mb-1">
+                                <i class="fas fa-tint text-green-500 mr-2"></i>
+                                <span class="font-medium text-gray-700">Humidity</span>
+                            </div>
+                            <p id="humidity" class="text-2xl font-bold text-gray-800">--<span class="text-lg">%</span>
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Weather Alert -->
+                    <div id="weatherAlert" class="hidden mt-6 p-4 rounded-lg bg-red-50 border border-red-200">
+                        <div class="flex items-center">
+                            <i class="fas fa-exclamation-triangle text-red-500 text-xl mr-3"></i>
+                            <div>
+                                <h4 class="font-bold text-red-700">Extreme Temperature Alert!</h4>
+                                <p id="alertMessage" class="text-red-600 text-sm">Temperature is above 40°C. Stay
+                                    hydrated!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- right panel -->
+            <div class="lg:w-2/3">
+                <div class="bg-white rounded-2xl shadow-lg p-6 h-full">
+                    <h2 class="text-xl font-semibold text-gray-800 mb-6">See next 5 Forecast of your location</h2>
+
+                    <!-- forecast container -->
+                    <div id="forecastContainer"
+                        class="hidden grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+
+                    </div>
+
+                    <!-- day details section-->
+                    <div id="dayDetails" class="hidden bg-blue-50 rounded-xl p-6 mt-6 border border-blue-200">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 id="detailsDay" class="text-xl font-bold text-gray-800">Day Details</h3>
+                            <button id="closeDetails" class="text-gray-500 hover:text-gray-700">
+                                <i class="fas fa-times text-xl"></i>
+                            </button>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                            <!-- temperature details -->
+                            <div class="bg-white p-4 rounded-lg shadow-sm">
+                                <div class="flex items-center mb-2">
+                                    <i class="fas fa-thermometer-half text-blue-500 mr-2"></i>
+                                    <h4 class="font-semibold text-gray-700">Temperature</h4>
+                                </div>
+                                <div class="space-y-2">
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-600">High:</span>
+                                        <span id="tempHigh" class="font-bold text-gray-800">--°C</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-600">Low:</span>
+                                        <span id="tempLow" class="font-bold text-gray-800">--°C</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-600">Feels Like:</span>
+                                        <span id="tempFeels" class="font-bold text-gray-800">--°C</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- wind details -->
+                            <div class="bg-white p-4 rounded-lg shadow-sm">
+                                <div class="flex items-center mb-2">
+                                    <i class="fas fa-wind text-green-500 mr-2"></i>
+                                    <h4 class="font-semibold text-gray-700">Wind</h4>
+                                </div>
+                                <div class="space-y-2">
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-600">Speed:</span>
+                                        <span id="windSpeedDetail" class="font-bold text-gray-800">-- M/S</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-600">Direction:</span>
+                                        <span id="windDir" class="font-bold text-gray-800">--°</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-600">Gust:</span>
+                                        <span id="windGust" class="font-bold text-gray-800">-- M/S</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- humidity and pressure -->
+                            <div class="bg-white p-4 rounded-lg shadow-sm">
+                                <div class="flex items-center mb-2">
+                                    <i class="fas fa-tint text-purple-500 mr-2"></i>
+                                    <h4 class="font-semibold text-gray-700">Humidity & Pressure</h4>
+                                </div>
+                                <div class="space-y-2">
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-600">Humidity:</span>
+                                        <span id="humidityDetail" class="font-bold text-gray-800">--%</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-600">Pressure:</span>
+                                        <span id="pressure" class="font-bold text-gray-800">-- hPa</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-600">Visibility:</span>
+                                        <span id="visibility" class="font-bold text-gray-800">-- km</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- sunrise and sunset -->
+                            <div class="bg-white p-4 rounded-lg shadow-sm">
+                                <div class="flex items-center mb-2">
+                                    <i class="fas fa-sun text-yellow-500 mr-2"></i>
+                                    <h4 class="font-semibold text-gray-700">Sunrise and Sunset</h4>
+                                </div>
+                                <div class="space-y-2">
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-600">Sunrise:</span>
+                                        <span id="sunrise" class="font-bold text-gray-800">--:--</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-600">Sunset:</span>
+                                        <span id="sunset" class="font-bold text-gray-800">--:--</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-600">Day Length:</span>
+                                        <span id="dayLength" class="font-bold text-gray-800">-- hrs</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- weather condition -->
+                        <div class="mt-6 bg-white p-4 rounded-lg shadow-sm">
+                            <div class="flex items-center mb-2">
+                                <i class="fas fa-cloud text-gray-500 mr-2"></i>
+                                <h4 class="font-semibold text-gray-700">Weather Conditions</h4>
+                            </div>
+                            <p id="weatherDescription" class="text-gray-700">Select a day to see detailed weather
+                                conditions.</p>
+                        </div>
+                    </div>
+
+                    <!-- Loading -->
+                    <div id="loading" class="text-center py-10">
+                        <div
+                            class="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500 mb-4">
+                        </div>
+                        <p class="text-gray-600">Loading weather data...</p>
+                    </div>
+
+                    <!-- Error State -->
+                    <div id="errorDisplay" class="hidden text-center py-10">
+                        <i class="fas fa-exclamation-circle text-red-500 text-5xl mb-4"></i>
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">Unable to Load Data</h3>
+                        <p id="errorMessage" class="text-gray-600">Please check your connection and try again </p>
+                        <button id="retryBtn"
+                            class="mt-4 bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg">
+                            Retry
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="mt-8 text-center text-black text-sm">
+            <p>Powered by <a href="https://openweathermap.org/" class="text-yellow-300 hover:underline"
+                    target="_blank">OpenWeatherMap</a></p>
+            <p class="mt-1 text-center text-black text-sm">© 2024 Weather Dashboard.</p>
+        </footer>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="script.js"></script>
+</body>
+
+</html>

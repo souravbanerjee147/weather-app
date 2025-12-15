@@ -30,4 +30,6 @@ A real-time weather dashboard website built with HTML, Tailwind CSS and JavaScri
 **Clone the repository**
    ```bash
 https://github.com/souravbanerjee147/weather-app
+cd Weather Forecast Application
+
 
